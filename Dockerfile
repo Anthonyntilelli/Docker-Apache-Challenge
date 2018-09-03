@@ -1,30 +1,25 @@
-# Apache Httpd with Static webpage using ALpine Linux
-
-FROM ubuntu
+# Apache Httpd with Static webpage
+FROM debian:9-slim
 
 LABEL maintainer="Anthony.n.tilelli@gmail.com"
 
 ENV APACHE_RUN_DIR /var/run/apache2
 ENV APACHE_RUN_USER  www-data
 ENV APACHE_RUN_GROUP www-data
-ENV APACHE_LOG_DIR   /var/log/apache2
+ENV APACHE_LOG_DIR  /var/log/apache2
+ENV APACHE_PID_FILE /var/run/apache2$SUFFIX/apache2.pid
 
 VOLUME /cert
+# Expecting certificate (domain.crt)  and Private key (domain.key)
 
-# install/upgrade and update Apache
+# Install Apache and clean up Apt
+RUN apt-get update && apt-get install -y --no-install-recommends apache2=2.4.25-3+deb9u5 && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-RUN apt-get update && apt-get install -y apache2
-
-# Clean up install leftovers
-RUN apt-get clean && apt-get autoremove && rm -rf /var/lib/apt/lists/* && rm -f /etc/apache2/sites-enabled/000-default.conf
-
+# Setup Apache
+RUN rm -f /etc/apache2/sites-enabled/000-default* && mkdir -p /var/run/apache2 && a2enmod ssl
 COPY apache_content/index.html /var/www/html/index.html
 COPY apache_content/virtualhost.conf /etc/apache2/sites-enabled/000-default.conf
 
-WORKDIR /var/run/apache2
-
-RUN a2enmod ssl
+EXPOSE 80 443
 
 CMD ["/usr/sbin/apache2", "-D", "FOREGROUND"]
-
-EXPOSE 80 443
