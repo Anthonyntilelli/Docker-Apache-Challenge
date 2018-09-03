@@ -2,10 +2,11 @@
 
 ## Table of Contents
 1. [Challenge](#Challenge)
-1. [Usage](#Usage)
+1. [Usage: Build](#Usage_BUILD)
+1. [Usage: Deploy](#Usage_DEPLOY)
 1. [Requirements](#Requirements)
 1. [Files](#Files)
-1. [Author](#Author)
+1. [Registy](#Registy)
 
 ## Challenge:               <a name="Challenge"></a>
 
@@ -18,13 +19,23 @@
   - Make use of CI tool to:
     - Build docker Images
     - Verify Docker builds
-    - Push to Docker Registy
-    - Verify the web server is listening on port 443.
+    - Push to GitLab Registy
 
-## Usage:                 <a name="Usage"></a>
+## Usage: Build                  <a name="Usage_BUILD"></a>
 
-sudo docker build . -t apa5 && sudo docker run -p 80:80 -p 443:443 -e "APACHE_REDIRECT_IP=127.0.0.1"  --mount type=bind,source="$(pwd)"/test,target=/cert,readonly apa5
+  - `CONTAINER_NAME="name"`
+  - `docker build . -t $CONTAINER_NAME`
 
+
+## Usage: Deploy                 <a name="Usage_DEPLOY"></a>
+
+  - `APA_REDIRECT="127.0.0.1"`
+    - set redirect to where you want apache to redirect port 80 connections.
+    - Do not include "https" or "http"
+  - `APA_CERT="$(pwd)/test"`
+    - set to location of the certificate and key
+    - Use absolute value location
+  - `docker run -p 80:80 -p 443:443 -e "APACHE_REDIRECT_IP=$APA_REDIRECT" --mount type=bind,source="$APA_CERT",target=/cert,readonly $CONTAINER_NAME`
 
 ## Requirements:          <a name="Requirements"></a>
 
@@ -33,9 +44,10 @@ sudo docker build . -t apa5 && sudo docker run -p 80:80 -p 443:443 -e "APACHE_RE
   - Certificate key (plain text) named:  domain.key
   - ENV variable: "APACHE_REDIRECT_IP" determines where apache will redirect on port 80
 
-## Files:                 <a name="Files"></a>
+## Registy:                 <a name="Registy"></a>
 
-
+ - CI Tool builds/pushes GitLab Registy
+ - Project permission is required to pull from registry.
 
 ## Author:                <a name="Author"></a>
  - Anthony Tilelli
