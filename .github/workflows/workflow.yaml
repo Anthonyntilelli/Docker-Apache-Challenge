@@ -1,7 +1,7 @@
 name: Github Action for Docker Demo
 on:
   push:
-    branch:
+    branches:
       - master
 jobs:
   Lint:
