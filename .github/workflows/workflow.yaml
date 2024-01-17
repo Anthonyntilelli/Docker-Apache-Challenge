@@ -1,0 +1,14 @@
+Name: Github Action for Docker Demo
+on: push
+jobs:
+  Lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out
+        uses: actions/checkout@v3
+      - name: Pull docker hadolint
+        run: docker pull hadolint/hadolint
+      - name: Output Version
+        run: docker run --rm hadolint/hadolint hadolint --version
+      - name: Run Lint
+        run: docker run --rm -i hadolint/hadolint < Dockerfile

@@ -1,7 +1,7 @@
 # Preforms below tasks:
 #  - Lints Dockerfile
 #  - Build docker Images to ensure it can build
-#  - Push to Docker Registy
+#  - Push to Docker Registry
 # Based on the official Docker gitlab-ci tool.
 image: docker:latest
 
@@ -16,13 +16,13 @@ services:
   - docker:dind
 
 lint:
- stage: lint
- script: 
-   - echo "Starting Dockerfile lint"
-   - docker pull hadolint/hadolint
-   - docker run --rm hadolint/hadolint hadolint --version
-   - docker run --rm -i hadolint/hadolint < Dockerfile
-   - echo "Lint Complete"
+  stage: lint
+  script:
+    - echo "Starting Dockerfile lint"
+    - docker pull hadolint/hadolint
+    - docker run --rm hadolint/hadolint hadolint --version
+    - docker run --rm -i hadolint/hadolint < Dockerfile
+    - echo "Lint Complete"
 
 build-master:
   stage: build
