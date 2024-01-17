@@ -1,4 +1,4 @@
-Name: Github Action for Docker Demo
+name: Github Action for Docker Demo
 on: push
 jobs:
   Lint:
