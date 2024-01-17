@@ -1,18 +1,21 @@
 name: Github Action for Docker Demo
-on: push
+on:
+  push:
+    branch:
+      - master
 jobs:
   Lint:
     runs-on: ubuntu-latest
     steps:
       - name: Check out
         uses: actions/checkout@v4
-        
+
       - name: Pull docker hadolint
         run: docker pull hadolint/hadolint
-        
+
       - name: Output Version
         run: docker run --rm hadolint/hadolint hadolint --version
-        
+
       - name: Run Lint
         run: docker run --rm -i hadolint/hadolint < Dockerfile
 
@@ -28,7 +31,7 @@ jobs:
     steps:
       - name: Check out
         uses: actions/checkout@v4
-        
+
       - name: Log in to the Container registry
         uses: docker/login-action@65b78e6e13532edd9afa3aa52ac7964289d1a9c1
         with:
@@ -49,4 +52,3 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-
