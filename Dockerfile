@@ -1,7 +1,7 @@
 # Apache Httpd with Static webpage
-FROM debian:9-slim
+FROM debian:12-slim
 
-LABEL maintainer="Anthony.n.tilelli@gmail.com"
+LABEL maintainer="Anthony@Tilelli.me"
 
 ENV APACHE_RUN_DIR /var/run/apache2
 ENV APACHE_RUN_USER  www-data
@@ -13,7 +13,7 @@ VOLUME /cert
 # Expecting certificate (domain.crt)  and Private key (domain.key)
 
 # Install Apache and clean up Apt
-RUN apt-get update && apt-get install -y --no-install-recommends apache2=2.4.25-3+deb9u5 && apt-get clean && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y --no-install-recommends apache2=2.4.57-2 && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Setup Apache
 RUN rm -f /etc/apache2/sites-enabled/000-default* && mkdir -p /var/run/apache2 && a2enmod ssl
